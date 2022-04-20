@@ -5,26 +5,35 @@
 
 Polynomial::Polynomial(int degree) {
     this->degree = degree;
-    this->coefficients = new double[degree+1];
+    this->coefficients = (double *) malloc(sizeof(double) * degree + 1);
     this->generateCoefficients();
 }
 
-Polynomial::Polynomial(const Polynomial &Polynomial) {}
+Polynomial::Polynomial(const Polynomial &other) {
+    this->degree = other.degree;
+    this->coefficients = (double *) malloc(sizeof(double) * degree + 1);
+    for(int i = 0; i <= other.degree; i++) {
+        this->coefficients[i] = other.coefficients[i];
+    }
+}
 
 Polynomial &Polynomial::operator=(const Polynomial &Polynomial) {
     return *this;
 }
 
 void Polynomial::print() {
-    for (int i = this->degree; i >= 0; --i) {
+    bool firstChar = false;
+    for (int i = 0; i <= this->degree; i++) {
         if (this->coefficients[i] == 0)
             continue;
 
-        if (this->coefficients[i] > 0 && i != this->degree) {
-            printf("+%f", this->coefficients[i]);
+        if (this->coefficients[i] > 0 && firstChar) {
+            printf(" + %f", this->coefficients[i]);
         } else {
-            printf("%f", this->coefficients[i]);
+            printf(" %f", this->coefficients[i]);
         }
+
+        firstChar = true; //Sluzy do sprawdzania czy juz wystapil jakas liczba tak aby nie dodawac znaku + na poczatku wyrazenia
 
         if (i > 0) {
             printf("x");
@@ -38,11 +47,8 @@ void Polynomial::print() {
     std::cout << std::endl;
 }
 
-/*
- * Nie rozumiem do czego mialoby to sluzyc
- */
 Polynomial Polynomial::derivative() {
-    return *this; //to ustawilem zeby bylo ale nie wiem co innego tu powinno sie robic
+    return *this; //todo trzeba to jeszcze skonczyc
 }
 
 void Polynomial::generateCoefficients() {
@@ -55,9 +61,6 @@ int Polynomial::getDegree() const {
     return this->degree;
 }
 
-/*
- * To moja metoda nie wymagana w zadaniu
- */
 double Polynomial::getCoefficient(int _degree) const {
     if (this->degree < _degree || _degree < 0)
         return 0;
@@ -65,9 +68,6 @@ double Polynomial::getCoefficient(int _degree) const {
     return this->coefficients[_degree];
 }
 
-/*
- * To moja metoda nie wymagana w zadaniu
- */
 void Polynomial::setCoefficient(int _degree, double coefficient) const {
     if (this->degree < _degree || _degree < 0)
         return;
@@ -76,11 +76,12 @@ void Polynomial::setCoefficient(int _degree, double coefficient) const {
 }
 
 
-Polynomial::~Polynomial() = default;
+Polynomial::~Polynomial() {
+    if(this->coefficients != nullptr) {
+        free(this->coefficients);
+    }
+}
 
-/*
- * To jest moja wizja ale powinienem pewnie jakoś wykorzystac metode derivative() i nawet nie wiem jak i gdzie...
- */
 Polynomial add(const Polynomial& p1, const Polynomial& p2)
 {
     int maxDegree = (p1.getDegree() > p2.getDegree())? p1.getDegree() : p2.getDegree();
@@ -94,5 +95,13 @@ Polynomial add(const Polynomial& p1, const Polynomial& p2)
 
 Polynomial multiply(const Polynomial& p1, const Polynomial& p2)
 {
+    int maxDegree = p1.getDegree() + p2.getDegree();
+    Polynomial polynomial = Polynomial(maxDegree);
+    for (int i = 0; i <= p1.getDegree(); i++) {
+        for (int j = 0; j <= p2.getDegree(); j++) {
+            polynomial.setCoefficient(i+j, p1.getCoefficient(i) + p2.getCoefficient(j));
+        }
+    }
 
+    return polynomial;
 }
