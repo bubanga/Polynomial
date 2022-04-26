@@ -94,15 +94,20 @@ Polynomial add(const Polynomial& p1, const Polynomial& p2) {
 
 Polynomial multiply(const Polynomial& p1, const Polynomial& p2) {
     int maxDegree = p1.getDegree() + p2.getDegree();
+
     Polynomial p3 = Polynomial(maxDegree);
+
+    //Resetowanie wspolczynnikow, dlatego ze sa wylosowane losowo a algorytm musi dodawac do juz istniejacych
+    //Przez mnozenie stopni wspolcznnikow zdarza sie ze przypisuje wartosc do wspolczynniku o n-stopniu wiecej niz jeden raz
+    //dlatego musi pobrac juz istniajaca wartosc i dodac lub odjac wynik z mnozenia wspolcznnikow
     p3.resetPolynomial();
 
     for (int i = 0; i <= p1.getDegree(); i++) {
-        if (p1.getCoefficient(i) == 0)
+        if (p1.getCoefficient(i) == 0) //Pomijanie wspolczynnikow rownych 0
             continue;
 
         for (int j = 0; j <= p2.getDegree(); j++) {
-            if (p2.getCoefficient(j) == 0)
+            if (p2.getCoefficient(j) == 0) //Pomijanie wspolczynnikow rownych 0
                 continue;
 
             p3.setCoefficient(i+j, p3.getCoefficient(i+j) + p1.getCoefficient(i) * p2.getCoefficient(j));
