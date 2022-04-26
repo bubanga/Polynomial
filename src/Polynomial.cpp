@@ -99,7 +99,7 @@ Polynomial multiply(const Polynomial& p1, const Polynomial& p2)
     Polynomial polynomial = Polynomial(maxDegree);
     for (int i = 0; i <= p1.getDegree(); i++) {
         for (int j = 0; j <= p2.getDegree(); j++) {
-            polynomial.setCoefficient(i+j, p1.getCoefficient(i) + p2.getCoefficient(j));
+            polynomial.setCoefficient(i+j, p1.getCoefficient(i) * p2.getCoefficient(j));
         }
     }
 
