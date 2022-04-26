@@ -20,6 +20,10 @@ int main() {
     p1.print();
     std::cout << "\np2(x)" << std::endl;
     p2.print();
+    std::cout << "\np1'(x)" << std::endl;
+    p1.derivative().print();
+    std::cout << "\np2'(x)" << std::endl;
+    p2.derivative().print();
     std::cout << "\np1(x) + p2(x)" << std::endl;
     add(p1, p2).print();
     std::cout << "\np1(x) * p2(x)" << std::endl;

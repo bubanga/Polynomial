@@ -45,7 +45,18 @@ void Polynomial::print() {
 }
 
 Polynomial Polynomial::derivative() {
-    return *this; //todo trzeba to jeszcze skonczyc
+    if (this->getDegree()-1 <= 0) {
+        Polynomial p = Polynomial(0);
+        return p;
+    }
+
+    Polynomial p = Polynomial(this->getDegree()-1);
+
+    for(int i = 1; i <= this->getDegree(); i++) {
+        p.setCoefficient(i-1, i*this->getCoefficient(i));
+    }
+
+    return p;
 }
 
 void Polynomial::generateCoefficients() {
