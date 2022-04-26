@@ -22,18 +22,11 @@ Polynomial &Polynomial::operator=(const Polynomial &other) {
 }
 
 void Polynomial::print() {
-    bool firstChar = false;
     for (int i = 0; i <= this->degree; i++) {
         if (this->coefficients[i] == 0)
             continue;
 
-        if (this->coefficients[i] > 0 && firstChar) {
-            printf(" + %f", this->coefficients[i]);
-        } else {
-            printf(" %f", this->coefficients[i]);
-        }
-
-        firstChar = true; //Sluzy do sprawdzania czy juz wystapil jakas liczba tak aby nie dodawac znaku + na poczatku wyrazenia
+        printf(" %f", this->coefficients[i]);
 
         if (i > 0) {
             printf("x");
@@ -41,6 +34,10 @@ void Polynomial::print() {
 
         if (i > 1) {
             printf("^%d", i);
+        }
+
+        if (this->degree >= i+1 && this->coefficients[i+1] > 0) {
+            printf(" +");
         }
     }
 
@@ -77,13 +74,15 @@ void Polynomial::setCoefficient(int _degree, double coefficient) const {
 
 
 Polynomial::~Polynomial() {
-    if(this->coefficients != nullptr) {
-        free(this->coefficients);
-    }
+    free(this->coefficients);
 }
 
-Polynomial add(const Polynomial& p1, const Polynomial& p2)
-{
+void Polynomial::resetPolynomial() {
+    for (int i = 0; i <= this->getDegree(); i++)
+        this->coefficients[i] = 0;
+}
+
+Polynomial add(const Polynomial& p1, const Polynomial& p2) {
     int maxDegree = (p1.getDegree() > p2.getDegree())? p1.getDegree() : p2.getDegree();
     Polynomial polynomial = Polynomial(maxDegree);
     for (int i = 0; i <= maxDegree; i++) {
@@ -93,15 +92,22 @@ Polynomial add(const Polynomial& p1, const Polynomial& p2)
     return polynomial;
 }
 
-Polynomial multiply(const Polynomial& p1, const Polynomial& p2)
-{
+Polynomial multiply(const Polynomial& p1, const Polynomial& p2) {
     int maxDegree = p1.getDegree() + p2.getDegree();
-    Polynomial polynomial = Polynomial(maxDegree);
+    Polynomial p3 = Polynomial(maxDegree);
+    p3.resetPolynomial();
+
     for (int i = 0; i <= p1.getDegree(); i++) {
+        if (p1.getCoefficient(i) == 0)
+            continue;
+
         for (int j = 0; j <= p2.getDegree(); j++) {
-            polynomial.setCoefficient(i+j, p1.getCoefficient(i) * p2.getCoefficient(j));
+            if (p2.getCoefficient(j) == 0)
+                continue;
+
+            p3.setCoefficient(i+j, p3.getCoefficient(i+j) + p1.getCoefficient(i) * p2.getCoefficient(j));
         }
     }
 
-    return polynomial;
+    return p3;
 }

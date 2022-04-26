@@ -16,13 +16,13 @@ int main() {
     srand(time(nullptr));
     Polynomial p1 = Polynomial(2);
     Polynomial p2 = Polynomial(2);
-    std::cout << "\nWielomian 1" << std::endl;
+    std::cout << "\np1(x)" << std::endl;
     p1.print();
-    std::cout << "\nWielomian 2" << std::endl;
+    std::cout << "\np2(x)" << std::endl;
     p2.print();
-    std::cout << "\nSuma wielomianu 1 i 2" << std::endl;
+    std::cout << "\np1(x) + p2(x)" << std::endl;
     add(p1, p2).print();
-    std::cout << "\nIloczyn wielomianu 1 i 2" << std::endl;
+    std::cout << "\np1(x) * p2(x)" << std::endl;
     multiply(p1, p2).print();
     return 0;
 }

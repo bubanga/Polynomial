@@ -69,6 +69,10 @@ public:
      */
     int getDegree() const;
 
+    /**
+     * Funkcja sluzy do wyzerowania wspolczynnikow wielomianu, potrzebne jest podczas mnozenia dwoch wielomianow
+     */
+    void resetPolynomial();
 
     double getCoefficient(int _degree) const;
     void setCoefficient(int _degree, double coefficient) const;
