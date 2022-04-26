@@ -17,7 +17,7 @@ Polynomial::Polynomial(const Polynomial &other) {
     }
 }
 
-Polynomial &Polynomial::operator=(const Polynomial &Polynomial) {
+Polynomial &Polynomial::operator=(const Polynomial &other) {
     return *this;
 }
 

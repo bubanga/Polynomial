@@ -39,13 +39,13 @@ public:
      * Konstruktor kopiujący
      * @param Polynomial
      */
-    Polynomial(const Polynomial &Polynomial);
+    Polynomial(const Polynomial &other);
 
     /**
      * @param Polynomial
      * @return
      */
-    Polynomial & operator=(const Polynomial &Polynomial);
+    Polynomial & operator=(const Polynomial &other);
 
     /**
      * Destruktor
